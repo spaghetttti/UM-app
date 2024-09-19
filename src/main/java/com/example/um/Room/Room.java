@@ -1,5 +1,6 @@
 package com.example.um.Room;
 import com.example.um.Building.Building;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,6 +28,7 @@ public class Room {
     // Many rooms belong to one building
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "building_id", nullable = false)
+    @JsonIgnore  // Prevents infinite recursion
     private Building building;
 
     // Constructors
