@@ -1,10 +1,12 @@
 package com.example.um.Room;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -15,15 +17,28 @@ public class RoomController {
 
     // Get all rooms
     @GetMapping
-    public List<Room> getAllRooms() {
-        return roomService.findAllRooms();
+    public List<RoomDTO> getAllRooms() {
+        return roomService.findAllRooms().stream().map(room -> new RoomDTO(
+                room.getId(),
+                room.getRoomNumber(),
+                room.getCapacity(),
+                room.getType(),
+                room.isAccessible(),
+                room.getFloor(),
+                room.getBuilding().getId()
+        )).collect(Collectors.toList());
     }
 
     // Get room by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Room> getRoomById(@PathVariable Long id) {
-        Optional<Room> room = roomService.findRoomById(id);
-        return room.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<RoomDTO> getRoomById(@PathVariable Long id) {
+        return roomService.findRoomById(id).map(room -> new RoomDTO(room.getId(),
+                room.getRoomNumber(),
+                room.getCapacity(),
+                room.getType(),
+                room.isAccessible(),
+                room.getFloor(),
+                room.getBuilding().getId())).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Create a new room

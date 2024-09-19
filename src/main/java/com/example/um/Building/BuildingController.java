@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -16,14 +17,22 @@ public class BuildingController {
 
 
     @GetMapping
-    public List<Building> getAllBuildings() {
-        return buildingService.findAllBuildings();
+    public List<BuildingDTO> getAllBuildings() {
+        return buildingService.findAllBuildings().stream().map(building -> new BuildingDTO(
+                        building.getId(),
+                        building.getCode(),
+                        building.getYearOfConstruction(),
+                        building.getCampus().getId()))  // Only return the Campus ID
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Building> getBuildingById(@PathVariable Long id) {
-        Optional<Building> building = buildingService.findBuildingById(id);
-        return building.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+    public ResponseEntity<BuildingDTO> getBuildingById(@PathVariable Long id) {
+        return buildingService.findBuildingById(id).map(building -> new BuildingDTO(
+                building.getId(),
+                building.getCode(),
+                building.getYearOfConstruction(),
+                building.getCampus().getId())).map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 
     @PostMapping
