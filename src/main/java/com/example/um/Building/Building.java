@@ -63,4 +63,9 @@ public class Building {
     public void setCampus(Campus campus) {
         this.campus = campus;
     }
+
+    @Override
+    public String toString() {
+        return this.id.toString() + "/" + this.campus.getId().toString() + "/" + this.yearOfConstruction;
+    }
 }
