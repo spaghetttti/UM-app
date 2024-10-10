@@ -43,8 +43,8 @@ public class RoomController {
 
     // Create a new room
     @PostMapping
-    public Room createRoom(@RequestBody Room room) {
-        return roomService.saveRoom(room);
+    public Room createRoom(@RequestBody RoomDTO room) {
+        return roomService.createRoom(room);
     }
 
     // Update a room by ID
