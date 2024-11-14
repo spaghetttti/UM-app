@@ -1,6 +1,7 @@
 package com.example.um.Building;
 import com.example.um.Campus.Campus;
 import com.example.um.Component.Component;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -27,6 +28,7 @@ public class Building {
 
     // Many buildings can be exploited by multiple components
     @ManyToMany(mappedBy = "exploitedBuildings")
+    @JsonBackReference
     private Set<Component> components;
 
     // Constructors

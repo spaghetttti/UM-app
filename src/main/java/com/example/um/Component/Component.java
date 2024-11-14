@@ -1,5 +1,6 @@
 package com.example.um.Component;
 import com.example.um.Building.Building;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -27,6 +28,7 @@ public class Component {
             joinColumns = @JoinColumn(name = "component_id"),
             inverseJoinColumns = @JoinColumn(name = "building_id")
     )
+    @JsonManagedReference
     private Set<Building> exploitedBuildings;
 
     // Constructors
