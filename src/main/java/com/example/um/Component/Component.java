@@ -1,5 +1,8 @@
 package com.example.um.Component;
+import com.example.um.Building.Building;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Component {
@@ -17,6 +20,15 @@ public class Component {
     @Column(nullable = false)
     private String responsiblePerson;
 
+    // One component can exploit many buildings
+    @ManyToMany
+    @JoinTable(
+            name = "component_building",
+            joinColumns = @JoinColumn(name = "component_id"),
+            inverseJoinColumns = @JoinColumn(name = "building_id")
+    )
+    private Set<Building> exploitedBuildings;
+
     // Constructors
     public Component() {}
 
@@ -24,6 +36,13 @@ public class Component {
         this.acronym = acronym;
         this.name = name;
         this.responsiblePerson = responsiblePerson;
+    }
+
+    public Component(String acronym, String name, String responsiblePerson, Set<Building> exploitedBuildings) {
+        this.acronym = acronym;
+        this.name = name;
+        this.responsiblePerson = responsiblePerson;
+        this.exploitedBuildings = exploitedBuildings;
     }
 
     // Getters and setters
@@ -57,5 +76,13 @@ public class Component {
 
     public void setResponsiblePerson(String responsiblePerson) {
         this.responsiblePerson = responsiblePerson;
+    }
+
+    public Set<Building> getExploitedBuildings() {
+        return exploitedBuildings;
+    }
+
+    public void setExploitedBuildings(Set<Building> exploitedBuildings) {
+        this.exploitedBuildings = exploitedBuildings;
     }
 }

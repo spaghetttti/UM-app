@@ -1,7 +1,10 @@
 package com.example.um.Building;
 import com.example.um.Campus.Campus;
+import com.example.um.Component.Component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Building {
@@ -22,6 +25,10 @@ public class Building {
     @JsonIgnore  // Prevents infinite recursion
     private Campus campus;
 
+    // Many buildings can be exploited by multiple components
+    @ManyToMany(mappedBy = "exploitedBuildings")
+    private Set<Component> components;
+
     // Constructors
     public Building() {}
 
@@ -29,6 +36,13 @@ public class Building {
         this.code = code;
         this.yearOfConstruction = yearOfConstruction;
         this.campus = campus;
+    }
+
+    public Building(String code, int yearOfConstruction, Campus campus, Set<Component> components) {
+        this.code = code;
+        this.yearOfConstruction = yearOfConstruction;
+        this.campus = campus;
+        this.components = components;
     }
 
     // Getters and setters
@@ -62,6 +76,14 @@ public class Building {
 
     public void setCampus(Campus campus) {
         this.campus = campus;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Component> components) {
+        this.components = components;
     }
 
     @Override
