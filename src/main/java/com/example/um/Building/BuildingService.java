@@ -38,9 +38,11 @@ public class BuildingService {
         building.setYearOfConstruction(buildingDTO.getYearOfConstruction());
 
         // Set the campus based on the campus ID
+        if (buildingDTO.getCampusId() != null) {
         Campus campus = campusRepository.findById(buildingDTO.getCampusId())
                 .orElseThrow(() -> new ResourceNotFoundException("Campus not found"));
         building.setCampus(campus);
+        }
 
         return buildingRepository.save(building);
     }
@@ -49,13 +51,19 @@ public class BuildingService {
         Building building = buildingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Building not found"));
 
-        building.setCode(buildingDetails.getCode());
-        building.setYearOfConstruction(buildingDetails.getYearOfConstruction());
+        if (buildingDetails.getCode() != null) {
+            building.setCode(buildingDetails.getCode());
+        }
 
-        // Updating the Campus if needed
-        Campus campus = campusRepository.findById(buildingDetails.getCampusId())
-                .orElseThrow(() -> new ResourceNotFoundException("Campus not found"));
-        building.setCampus(campus);
+        if (buildingDetails.getYearOfConstruction() != null) {
+            building.setYearOfConstruction(buildingDetails.getYearOfConstruction());
+        }
+
+        if (buildingDetails.getCampusId() != null) {
+            Campus campus = campusRepository.findById(buildingDetails.getCampusId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Campus not found"));
+            building.setCampus(campus);
+        }
 
         return buildingRepository.save(building);
     }

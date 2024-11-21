@@ -18,7 +18,7 @@ public class Building {
     private String code;
 
     @Column(nullable = false)
-    private int yearOfConstruction;
+    private Integer yearOfConstruction;
 
     // Many buildings can belong to one campus
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,7 +68,7 @@ public class Building {
         return yearOfConstruction;
     }
 
-    public void setYearOfConstruction(int yearOfConstruction) {
+    public void setYearOfConstruction(Integer yearOfConstruction) {
         this.yearOfConstruction = yearOfConstruction;
     }
 

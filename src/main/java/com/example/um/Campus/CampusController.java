@@ -26,21 +26,23 @@ public class CampusController {
     }
 
     @PostMapping
-    public Campus createCampus(@RequestBody Campus campus) {
-        return campusService.saveCampus(campus);
+    public Campus createCampus(@RequestBody CampusDTO campus) {
+        return campusService.createCampus(campus);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Campus> updateCampus(@PathVariable Long id, @RequestBody Campus campusDetails) {
-        Optional<Campus> campusOptional = campusService.findCampusById(id);
-        if (campusOptional.isPresent()) {
-            Campus campus = campusOptional.get();
-            campus.setName(campusDetails.getName());
-            campus.setCity(campusDetails.getCity());
-            return ResponseEntity.ok(campusService.saveCampus(campus));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Campus updateCampus(@PathVariable Long id, @RequestBody CampusDTO campusDetails) {
+//        Optional<Campus> campusOptional = campusService.findCampusById(id);
+//        if (campusOptional.isPresent()) {
+//            Campus campus = campusOptional.get();
+//            campus.setName(campusDetails.getName());
+//            campus.setCity(campusDetails.getCity());
+//            return ResponseEntity.ok(campusService.saveCampus(campus));
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return campusService.updateCampus(new CampusDTO(id, ...campusDetails));
+        return null;
     }
 
     @DeleteMapping("/{id}")
