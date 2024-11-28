@@ -4,19 +4,19 @@ import java.util.List;
 
 public class ComponentDTO {
     private Long id;
-    private String code;
+    private String acronym;
     private String name;
-    private String manager;
-    private List<Long> buildingIds; // IDs of exploited buildings
+    private String responsiblePerson;
+    private List<Long> buildingIds;
 
     // Constructors
     public ComponentDTO() {}
 
-    public ComponentDTO(Long id, String code, String name, String manager, List<Long> buildingIds) {
+    public ComponentDTO(Long id, String acronym, String name, String responsiblePerson, List<Long> buildingIds) {
         this.id = id;
-        this.code = code;
+        this.acronym = acronym;
         this.name = name;
-        this.manager = manager;
+        this.responsiblePerson = responsiblePerson;
         this.buildingIds = buildingIds;
     }
 
@@ -29,12 +29,12 @@ public class ComponentDTO {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public String getAcronym() {
+        return acronym;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
     }
 
     public String getName() {
@@ -45,12 +45,12 @@ public class ComponentDTO {
         this.name = name;
     }
 
-    public String getManager() {
-        return manager;
+    public String getResponsiblePerson() {
+        return responsiblePerson;
     }
 
-    public void setManager(String manager) {
-        this.manager = manager;
+    public void setResponsiblePerson(String responsiblePerson) {
+        this.responsiblePerson = responsiblePerson;
     }
 
     public List<Long> getBuildingIds() {

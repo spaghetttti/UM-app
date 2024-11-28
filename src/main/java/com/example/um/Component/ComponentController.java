@@ -1,5 +1,6 @@
 package com.example.um.Component;
 
+import com.example.um.Campus.CampusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,23 +30,14 @@ public class ComponentController {
 
     // Create a new component
     @PostMapping
-    public Component createComponent(@RequestBody Component component) {
-        return componentService.saveComponent(component);
+    public Component createComponent(@RequestBody ComponentDTO component) {
+        return componentService.createComponent(component);
     }
 
     // Update a component by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Component> updateComponent(@PathVariable Long id, @RequestBody Component componentDetails) {
-        Optional<Component> componentOptional = componentService.findComponentById(id);
-        if (componentOptional.isPresent()) {
-            Component component = componentOptional.get();
-            component.setAcronym(componentDetails.getAcronym());
-            component.setName(componentDetails.getName());
-            component.setResponsiblePerson(componentDetails.getResponsiblePerson());
-            return ResponseEntity.ok(componentService.saveComponent(component));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Component updateComponent(@PathVariable Long id, @RequestBody ComponentDTO componentDetails) {
+        return componentService.updateComponent(id, componentDetails);
     }
 
     // Delete a component by ID
