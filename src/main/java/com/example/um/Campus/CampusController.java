@@ -32,17 +32,7 @@ public class CampusController {
 
     @PutMapping("/{id}")
     public Campus updateCampus(@PathVariable Long id, @RequestBody CampusDTO campusDetails) {
-//        Optional<Campus> campusOptional = campusService.findCampusById(id);
-//        if (campusOptional.isPresent()) {
-//            Campus campus = campusOptional.get();
-//            campus.setName(campusDetails.getName());
-//            campus.setCity(campusDetails.getCity());
-//            return ResponseEntity.ok(campusService.saveCampus(campus));
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//        return campusService.updateCampus(new CampusDTO(id, ...campusDetails));
-        return null;
+        return campusService.updateCampus(id, campusDetails);
     }
 
     @DeleteMapping("/{id}")

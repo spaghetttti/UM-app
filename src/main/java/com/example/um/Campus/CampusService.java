@@ -32,7 +32,6 @@ public class CampusService {
     }
 
     public Campus createCampus(CampusDTO campusDTO) {
-        // Validate the input DTO
         if (campusDTO.getName() == null || campusDTO.getName().isEmpty()) {
             throw new IllegalArgumentException("Campus name cannot be null or empty");
         }
@@ -40,46 +39,37 @@ public class CampusService {
             throw new IllegalArgumentException("Campus city cannot be null or empty");
         }
 
-        // Create a new Campus entity
         Campus createdCampus = new Campus();
         createdCampus.setName(campusDTO.getName());
         createdCampus.setCity(campusDTO.getCity());
 
-        // If building IDs are provided, fetch and associate them
-        if (campusDTO.getBuildingIds() != null) {
+            if (campusDTO.getBuildingIds() != null) {
             Set<Building> buildings = new HashSet<>(buildingRepository.findAllById(campusDTO.getBuildingIds()));
             createdCampus.setBuildings(buildings);
         }
 
-        // Save the campus to the repository
         return campusRepository.save(createdCampus);
     }
 
-    public Campus updateCampus(CampusDTO campusDTO) {
-        // Validate the input DTO
-        if (campusDTO.getId() == null) {
+    public Campus updateCampus(Long id, CampusDTO campusDTO) {
+        if (id == null) {
             throw new IllegalArgumentException("Campus ID cannot be null");
         }
 
-        // Fetch the existing campus from the repository
-        Campus existingCampus = campusRepository.findById(campusDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Campus not found with id: " + campusDTO.getId()));
+        Campus existingCampus = campusRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campus not found with id: " + id));
 
-        // Update fields with null checking and data validation
         if (campusDTO.getName() != null && !campusDTO.getName().isEmpty()) {
             existingCampus.setName(campusDTO.getName());
         }
         if (campusDTO.getCity() != null && !campusDTO.getCity().isEmpty()) {
             existingCampus.setCity(campusDTO.getCity());
         }
-
-        // Update buildings if provided
         if (campusDTO.getBuildingIds() != null) {
             Set<Building> buildings = new HashSet<>(buildingRepository.findAllById(campusDTO.getBuildingIds()));
             existingCampus.setBuildings(buildings);
         }
 
-        // Save the updated campus
         return campusRepository.save(existingCampus);
     }
 
