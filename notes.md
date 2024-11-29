@@ -9,7 +9,7 @@
 - [ ] implement graceful error handling / data integrity (in service layer?)
 - [ ] add custom business logic to service layer if necessary 
 - [ ] implement custom sql queries in repos or maybe indexing if there's a need
-
+- [ ] implement basic unit tests 
 
 
 initial creation workflow -> Campus -> building -> room -> component
