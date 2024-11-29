@@ -49,19 +49,8 @@ public class RoomController {
 
     // Update a room by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Room> updateRoom(@PathVariable Long id, @RequestBody Room roomDetails) {
-        Optional<Room> roomOptional = roomService.findRoomById(id);
-        if (roomOptional.isPresent()) {
-            Room room = roomOptional.get();
-            room.setRoomNumber(roomDetails.getRoomNumber());
-            room.setCapacity(roomDetails.getCapacity());
-            room.setType(roomDetails.getType());
-            room.setAccessible(roomDetails.isAccessible());
-            room.setFloor(roomDetails.getFloor());
-            return ResponseEntity.ok(roomService.saveRoom(room));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Room updateRoom(@PathVariable Long id, @RequestBody RoomDTO roomDetails) {
+        return roomService.updateRoom(id, roomDetails);
     }
 
     // Delete a room by ID

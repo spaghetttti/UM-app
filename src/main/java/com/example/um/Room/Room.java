@@ -14,7 +14,7 @@ public class Room {
     private String roomNumber;
 
     @Column(nullable = false)
-    private int capacity;
+    private Integer capacity;
 
     @Column(nullable = false)
     private String type; // E.g., "lecture", "lab", "computer"
@@ -23,7 +23,7 @@ public class Room {
     private boolean accessible; // Accessibility for disabled persons
 
     @Column(nullable = false)
-    private int floor;
+    private Integer floor;
 
     // Many rooms belong to one building
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,7 +34,7 @@ public class Room {
     // Constructors
     public Room() {}
 
-    public Room(String roomNumber, int capacity, String type, boolean accessible, int floor, Building building) {
+    public Room(String roomNumber, Integer capacity, String type, boolean accessible, Integer floor, Building building) {
         this.roomNumber = roomNumber;
         this.capacity = capacity;
         this.type = type;
@@ -60,11 +60,11 @@ public class Room {
         this.roomNumber = roomNumber;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
@@ -84,11 +84,11 @@ public class Room {
         this.accessible = accessible;
     }
 
-    public int getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
-    public void setFloor(int floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
     }
 
