@@ -1,5 +1,5 @@
 - [x] establish mapping with working api for get request for each entity
-- [ ] verify crud for each entity
+- [x] verify crud for each entity
 - - [x] crud for building works
 - - [x] crud for campuses works
 - - [x] crud for rooms works
@@ -9,7 +9,7 @@
 - [ ] implement graceful error handling / data integrity (in service layer?)
 - [ ] add custom business logic to service layer if necessary 
 - [ ] implement custom sql queries in repos or maybe indexing if there's a need
-- [ ] implement basic unit tests 
+- [x] implement basic unit tests / (some still not passing) 
 
 
 initial creation workflow -> Campus -> building -> room -> component
