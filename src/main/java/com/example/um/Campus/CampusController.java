@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "/**")
 @RequestMapping("/api/campuses")
 public class CampusController {
 
@@ -26,25 +27,26 @@ public class CampusController {
     }
 
     @PostMapping
-    public Campus createCampus(@RequestBody Campus campus) {
-        return campusService.saveCampus(campus);
+    public ResponseEntity<Campus> createCampus(@RequestBody CampusDTO campus, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(campusService.createCampus(campus));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Campus> updateCampus(@PathVariable Long id, @RequestBody Campus campusDetails) {
-        Optional<Campus> campusOptional = campusService.findCampusById(id);
-        if (campusOptional.isPresent()) {
-            Campus campus = campusOptional.get();
-            campus.setName(campusDetails.getName());
-            campus.setCity(campusDetails.getCity());
-            return ResponseEntity.ok(campusService.saveCampus(campus));
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Campus> updateCampus(@PathVariable Long id, @RequestBody CampusDTO campusDetails, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
         }
+        return ResponseEntity.status(200).body(campusService.updateCampus(id, campusDetails));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCampus(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCampus(@PathVariable Long id, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
         campusService.deleteCampus(id);
         return ResponseEntity.noContent().build();
     }

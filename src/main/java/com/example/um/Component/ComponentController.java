@@ -1,5 +1,6 @@
 package com.example.um.Component;
 
+import com.example.um.Campus.CampusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "/**")
 @RequestMapping("/api/components")
 public class ComponentController {
 
@@ -29,28 +31,28 @@ public class ComponentController {
 
     // Create a new component
     @PostMapping
-    public Component createComponent(@RequestBody Component component) {
-        return componentService.saveComponent(component);
+    public ResponseEntity<Component> createComponent(@RequestBody ComponentDTO component, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(componentService.createComponent(component));
     }
 
     // Update a component by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Component> updateComponent(@PathVariable Long id, @RequestBody Component componentDetails) {
-        Optional<Component> componentOptional = componentService.findComponentById(id);
-        if (componentOptional.isPresent()) {
-            Component component = componentOptional.get();
-            component.setAcronym(componentDetails.getAcronym());
-            component.setName(componentDetails.getName());
-            component.setResponsiblePerson(componentDetails.getResponsiblePerson());
-            return ResponseEntity.ok(componentService.saveComponent(component));
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Component> updateComponent(@PathVariable Long id, @RequestBody ComponentDTO componentDetails, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
         }
+        return ResponseEntity.status(200).body(componentService.updateComponent(id, componentDetails));
     }
 
     // Delete a component by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComponent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteComponent(@PathVariable Long id, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
         componentService.deleteComponent(id);
         return ResponseEntity.noContent().build();
     }

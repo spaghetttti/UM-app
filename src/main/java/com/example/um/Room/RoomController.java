@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "/**")
 @RequestMapping("/api/rooms")
 public class RoomController {
 
@@ -43,30 +44,28 @@ public class RoomController {
 
     // Create a new room
     @PostMapping
-    public Room createRoom(@RequestBody Room room) {
-        return roomService.saveRoom(room);
+    public ResponseEntity<Room> createRoom(@RequestBody RoomDTO room, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER") && !role.equals("TEACHER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(roomService.createRoom(room));
     }
 
     // Update a room by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Room> updateRoom(@PathVariable Long id, @RequestBody Room roomDetails) {
-        Optional<Room> roomOptional = roomService.findRoomById(id);
-        if (roomOptional.isPresent()) {
-            Room room = roomOptional.get();
-            room.setRoomNumber(roomDetails.getRoomNumber());
-            room.setCapacity(roomDetails.getCapacity());
-            room.setType(roomDetails.getType());
-            room.setAccessible(roomDetails.isAccessible());
-            room.setFloor(roomDetails.getFloor());
-            return ResponseEntity.ok(roomService.saveRoom(room));
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Room> updateRoom(@PathVariable Long id, @RequestBody RoomDTO roomDetails, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER") && !role.equals("TEACHER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
         }
+        return ResponseEntity.status(200).body(roomService.updateRoom(id, roomDetails));
     }
 
     // Delete a room by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long id, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER") && !role.equals("TEACHER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
         roomService.deleteRoom(id);
         return ResponseEntity.noContent().build();
     }

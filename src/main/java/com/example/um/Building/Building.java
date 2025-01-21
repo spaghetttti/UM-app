@@ -1,7 +1,11 @@
 package com.example.um.Building;
 import com.example.um.Campus.Campus;
+import com.example.um.Component.Component;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Building {
@@ -14,13 +18,18 @@ public class Building {
     private String code;
 
     @Column(nullable = false)
-    private int yearOfConstruction;
+    private Integer yearOfConstruction;
 
     // Many buildings can belong to one campus
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "campus_id", nullable = false)
     @JsonIgnore  // Prevents infinite recursion
     private Campus campus;
+
+    // Many buildings can be exploited by multiple components
+    @ManyToMany(mappedBy = "exploitedBuildings")
+    @JsonBackReference
+    private Set<Component> components;
 
     // Constructors
     public Building() {}
@@ -29,6 +38,13 @@ public class Building {
         this.code = code;
         this.yearOfConstruction = yearOfConstruction;
         this.campus = campus;
+    }
+
+    public Building(String code, int yearOfConstruction, Campus campus, Set<Component> components) {
+        this.code = code;
+        this.yearOfConstruction = yearOfConstruction;
+        this.campus = campus;
+        this.components = components;
     }
 
     // Getters and setters
@@ -52,7 +68,7 @@ public class Building {
         return yearOfConstruction;
     }
 
-    public void setYearOfConstruction(int yearOfConstruction) {
+    public void setYearOfConstruction(Integer yearOfConstruction) {
         this.yearOfConstruction = yearOfConstruction;
     }
 
@@ -62,5 +78,18 @@ public class Building {
 
     public void setCampus(Campus campus) {
         this.campus = campus;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Component> components) {
+        this.components = components;
+    }
+
+    @Override
+    public String toString() {
+        return this.id.toString() + "/" + this.campus.getId().toString() + "/" + this.yearOfConstruction;
     }
 }

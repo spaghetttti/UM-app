@@ -4,11 +4,11 @@ public class BuildingDTO {
 
     private Long id;
     private String code;
-    private int yearOfConstruction;
+    private Integer yearOfConstruction;
     private Long campusId;  // ID of the associated Campus
 
     // Constructors
-    public BuildingDTO(Long id, String code, int yearOfConstruction, Long campusId) {
+    public BuildingDTO(Long id, String code, Integer yearOfConstruction, Long campusId) {
         this.id = id;
         this.code = code;
         this.yearOfConstruction = yearOfConstruction;
@@ -22,8 +22,8 @@ public class BuildingDTO {
     public String getCode() { return code; }
     public void setCode(String code) { this.code = code; }
 
-    public int getYearOfConstruction() { return yearOfConstruction; }
-    public void setYearOfConstruction(int yearOfConstruction) { this.yearOfConstruction = yearOfConstruction; }
+    public Integer getYearOfConstruction() { return yearOfConstruction; }
+    public void setYearOfConstruction(Integer yearOfConstruction) { this.yearOfConstruction = yearOfConstruction; }
 
     public Long getCampusId() { return campusId; }
     public void setCampusId(Long campusId) { this.campusId = campusId; }
