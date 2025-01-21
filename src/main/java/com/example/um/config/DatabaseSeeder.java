@@ -8,6 +8,9 @@ import com.example.um.Campus.CampusRepository;
 import com.example.um.Component.ComponentRepository;
 import com.example.um.Room.Room;
 import com.example.um.Room.RoomRepository;
+import com.example.um.User.User;
+import com.example.um.User.UserRepository;
+import com.example.um.utils.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -27,6 +30,8 @@ public class DatabaseSeeder implements CommandLineRunner {
     private RoomRepository roomRepository;
     @Autowired
     private ComponentRepository componentRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public void run(String... args) throws Exception {
         seedDatabase();
@@ -34,7 +39,12 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     private void seedDatabase() {
         // Check if the database is already seeded
-        if (campusRepository.count() == 0) {
+        if (campusRepository.count() == 0 || buildingRepository.count() == 0 || roomRepository.count() == 0 || componentRepository.count() == 0 )  {
+//            campusRepository.deleteAll();
+//            componentRepository.deleteAll();
+//            roomRepository.deleteAll();
+//            buildingRepository.deleteAll();
+//            userRepository.deleteAll();
             // Create Campuses
             Campus triolet = new Campus("Triolet", "Montpellier");
             Campus stPriest = new Campus("St Priest", "Montpellier");
@@ -91,6 +101,9 @@ public class DatabaseSeeder implements CommandLineRunner {
             iae.setExploitedBuildings(new HashSet<>(Arrays.asList(trioletB16, trioletB05)));
 
             componentRepository.saveAll(Arrays.asList(fds, iae));
+
+            User adminUser = new User("admin@example.com", PasswordUtil.hashPassword("admin123"), User.Role.ADMINISTRATOR);
+            userRepository.save(adminUser);
 
             System.out.println("Database seeded with sample data.");
         } else {

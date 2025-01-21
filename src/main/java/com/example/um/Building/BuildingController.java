@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@CrossOrigin(origins = "/**",  allowedHeaders = "Content-Type, Authorization")
 @RequestMapping("/api/buildings")
 public class BuildingController {
     private final BuildingService buildingService;
