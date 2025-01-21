@@ -35,7 +35,7 @@ class BuildingServiceTest {
     @Test
     void createBuilding_Success() {
         // Mock input
-        BuildingDTO buildingDTO = new BuildingDTO(1L,"B101", 2020, 1L);
+        BuildingDTO buildingDTO = new BuildingDTO(1L,"B101", 2020, 1L, 48.8584d, 2.3522d);
 //        buildingDTO.setCode("B101");
 //        buildingDTO.setYearOfConstruction(2020);
 //        buildingDTO.setCampusId(1L);
@@ -67,7 +67,7 @@ class BuildingServiceTest {
     @Test
     void createBuilding_CampusNotFound() {
         // Mock input
-        BuildingDTO buildingDTO = new BuildingDTO(1L,"B101", 2020, 1L);
+        BuildingDTO buildingDTO = new BuildingDTO(1L,"B101", 2020, 1L, 48.8584d, 2.3522d);
 //        buildingDTO.setCode("B101");
 //        buildingDTO.setYearOfConstruction(2020);
 //        buildingDTO.setCampusId(1L);

@@ -30,6 +30,10 @@ public class Building {
     @ManyToMany(mappedBy = "exploitedBuildings")
     @JsonBackReference
     private Set<Component> components;
+    @Column
+    private Double latitude;
+    @Column
+    private Double longitude;
 
     // Constructors
     public Building() {}
@@ -40,11 +44,13 @@ public class Building {
         this.campus = campus;
     }
 
-    public Building(String code, int yearOfConstruction, Campus campus, Set<Component> components) {
+    public Building(String code, int yearOfConstruction, Campus campus, Set<Component> components, Double latitude, Double longitude) {
         this.code = code;
         this.yearOfConstruction = yearOfConstruction;
         this.campus = campus;
         this.components = components;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     // Getters and setters
@@ -86,6 +92,22 @@ public class Building {
 
     public void setComponents(Set<Component> components) {
         this.components = components;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     @Override
