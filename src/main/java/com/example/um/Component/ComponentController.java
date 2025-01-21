@@ -31,19 +31,28 @@ public class ComponentController {
 
     // Create a new component
     @PostMapping
-    public Component createComponent(@RequestBody ComponentDTO component) {
-        return componentService.createComponent(component);
+    public ResponseEntity<Component> createComponent(@RequestBody ComponentDTO component, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(componentService.createComponent(component));
     }
 
     // Update a component by ID
     @PutMapping("/{id}")
-    public Component updateComponent(@PathVariable Long id, @RequestBody ComponentDTO componentDetails) {
-        return componentService.updateComponent(id, componentDetails);
+    public ResponseEntity<Component> updateComponent(@PathVariable Long id, @RequestBody ComponentDTO componentDetails, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(componentService.updateComponent(id, componentDetails));
     }
 
     // Delete a component by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComponent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteComponent(@PathVariable Long id, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
         componentService.deleteComponent(id);
         return ResponseEntity.noContent().build();
     }

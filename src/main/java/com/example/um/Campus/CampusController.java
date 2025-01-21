@@ -27,17 +27,26 @@ public class CampusController {
     }
 
     @PostMapping
-    public Campus createCampus(@RequestBody CampusDTO campus) {
-        return campusService.createCampus(campus);
+    public ResponseEntity<Campus> createCampus(@RequestBody CampusDTO campus, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(campusService.createCampus(campus));
     }
 
     @PutMapping("/{id}")
-    public Campus updateCampus(@PathVariable Long id, @RequestBody CampusDTO campusDetails) {
-        return campusService.updateCampus(id, campusDetails);
+    public ResponseEntity<Campus> updateCampus(@PathVariable Long id, @RequestBody CampusDTO campusDetails, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(campusService.updateCampus(id, campusDetails));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCampus(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCampus(@PathVariable Long id, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
         campusService.deleteCampus(id);
         return ResponseEntity.noContent().build();
     }

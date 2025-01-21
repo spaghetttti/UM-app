@@ -1,6 +1,7 @@
 package com.example.um.Building;
 
 import com.example.um.Campus.CampusRepository;
+import com.example.um.User.User;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,14 +44,22 @@ public class BuildingController {
     }
 
     @PostMapping
-    public Building createBuilding(@RequestBody BuildingDTO building) {
-        return buildingService.createBuilding(building);
+    public ResponseEntity<Building> createBuilding(@RequestBody BuildingDTO building, @RequestHeader("Role") String role) {
+        User.Role enumRole = User.Role.valueOf(role);
+        if (!enumRole.equals(User.Role.ADMINISTRATOR) && !enumRole.equals(User.Role.MANAGER)) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(buildingService.createBuilding(building));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Building> updateBuilding(@PathVariable Long id, @RequestBody BuildingDTO buildingDetails) {
+    public ResponseEntity<Building> updateBuilding(@PathVariable Long id, @RequestBody BuildingDTO buildingDetails, @RequestHeader("Role") String role) {
         try {
             Building updatedBuilding = buildingService.updateBuilding(id, buildingDetails);
+            User.Role enumRole = User.Role.valueOf(role);
+            if (!enumRole.equals(User.Role.ADMINISTRATOR) && !enumRole.equals(User.Role.MANAGER)) {
+                return ResponseEntity.status(403).body(null); // Forbidden
+            }
             return ResponseEntity.ok(updatedBuilding);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -58,8 +67,12 @@ public class BuildingController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBuilding(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBuilding(@PathVariable Long id, @RequestHeader("Role") String role) {
         try {
+            User.Role enumRole = User.Role.valueOf(role);
+            if (!enumRole.equals(User.Role.ADMINISTRATOR) && !enumRole.equals(User.Role.MANAGER)) {
+                return ResponseEntity.status(403).body(null); // Forbidden
+            }
             buildingService.deleteBuilding(id);
             return ResponseEntity.noContent().build();
         } catch (ResourceNotFoundException e) {

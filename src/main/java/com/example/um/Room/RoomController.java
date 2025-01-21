@@ -44,19 +44,28 @@ public class RoomController {
 
     // Create a new room
     @PostMapping
-    public Room createRoom(@RequestBody RoomDTO room) {
-        return roomService.createRoom(room);
+    public ResponseEntity<Room> createRoom(@RequestBody RoomDTO room, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER") && !role.equals("TEACHER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(roomService.createRoom(room));
     }
 
     // Update a room by ID
     @PutMapping("/{id}")
-    public Room updateRoom(@PathVariable Long id, @RequestBody RoomDTO roomDetails) {
-        return roomService.updateRoom(id, roomDetails);
+    public ResponseEntity<Room> updateRoom(@PathVariable Long id, @RequestBody RoomDTO roomDetails, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER") && !role.equals("TEACHER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
+        return ResponseEntity.status(200).body(roomService.updateRoom(id, roomDetails));
     }
 
     // Delete a room by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long id, @RequestHeader("Role") String role) {
+        if (!role.equals("ADMINISTRATOR") && !role.equals("MANAGER") && !role.equals("TEACHER")) {
+            return ResponseEntity.status(403).body(null); // Forbidden
+        }
         roomService.deleteRoom(id);
         return ResponseEntity.noContent().build();
     }
